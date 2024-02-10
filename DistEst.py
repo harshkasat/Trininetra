@@ -33,58 +33,43 @@ class DistEstimate:
         self.engine.runAndWait()
 
 
-    def est(self):
+    def est(self, image):
+        image = cv2.resize(image, (640, 480))
+        height, width, channels = image.shape
+        results = self.model(image)
+        boxes = []
+        new_detection = np.empty((0, 5))
+        for result in results:
+            for data in result.boxes.data.tolist():
+                xmin, ymin, xmax, ymax, confidence, class_id = data
+                if confidence > self.detection_threshold:
 
+                    xmin = int(xmin)
+                    ymin = int(ymin)
+                    xmax = int(xmax)
+                    ymax = int(ymax)
 
-        while self.cap.isOpened():
-            ret, image = self.cap.read()
-            image = cv2.resize(image, (640, 480))
-            height, width, channels = image.shape
-            results = self.model(image)
-            boxes = []
-            new_detection = np.empty((0, 5))
-            for result in results:
-                for data in result.boxes.data.tolist():
-                    xmin, ymin, xmax, ymax, confidence, class_id = data
-                    if confidence > self.detection_threshold:
+                    class_id = int(class_id)
+                    color = [int(c) for c in self.colors[class_id]]
 
-                        xmin = int(xmin)
-                        ymin = int(ymin)
-                        xmax = int(xmax)
-                        ymax = int(ymax)
+                    d = ((2 * 3.14 * 180) / (xmax-xmin + (ymax-ymin) * 360)) * 1000 + 6
 
-                        class_id = int(class_id)
-                        color = [int(c) for c in self.colors[class_id]]
+                    cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color=color, thickness=self.thickness)
 
-                        d = ((2 * 3.14 * 180) / (xmax-xmin + (ymax-ymin) * 360)) * 1000 + 6
+                    cv2.putText(image, f'Depth: {int(d)}inch', (xmin, ymin + 30), self.font_scale, 2, color, 2)
+                    currentArr = np.array([xmin, ymin, xmax, ymax, confidence])
 
-                        cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color=color, thickness=self.thickness)
+                    new_detection = np.vstack((new_detection, currentArr))
+                    noice = self.tracker.update(new_detection)
+                    idx = None
+                    if len(noice) > 1:
+                        idx = noice[0][4]
 
-                        cv2.putText(image, f'Depth: {int(d)}inch', (xmin, ymin + 30), self.font_scale, 2, color, 2)
-                        currentArr = np.array([xmin, ymin, xmax, ymax, confidence])
-
-                        new_detection = np.vstack((new_detection, currentArr))
-                        noice = self.tracker.update(new_detection)
-                        if len(noice) > 1:
-                            idx = noice[0][4]
-
-                        if d < 13:
-                            cv2.putText(image, f' Alert object {self.labels[class_id]} near {math.floor(d)} inch', (16, 28), self.font_scale, 2, (0, 0, 255), 2)
-                            if idx not in self.result_id:
-                                self.result_id.append(id)
-                                threading.Thread(target=self.get_alert, kwargs={"class_id":class_id}
-                                                ).start()
-                                
-
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-            cv2.imshow('Select Region', image)
-
-
-        self.cap.release()
-        cv2.destroyAllWindows()
-
-
-if '__name__' == '__main__':
-    run = DistEstimate()
-    run.est()
+                    if d < 13:
+                        cv2.putText(image, f' Alert object {self.labels[class_id]} near {math.floor(d)} inch', (16, 28), self.font_scale, 2, (0, 0, 255), 2)
+                        if idx not in self.result_id:
+                            self.result_id.append(id)
+                            threading.Thread(target=self.get_alert, kwargs={"class_id":class_id}
+                                            ).start()
+                            
+        return image
