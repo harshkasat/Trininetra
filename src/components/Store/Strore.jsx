@@ -39,11 +39,11 @@ function Strore(props) {
          variants={container}
          initial="hidden"
          animate="visible"
-        className='container grid grid-cols-2 gap-4 mt-6 content-evenly'>
+        className='container  mt-6 flex flex-row gap-10 justify-center'>
         {rend}
         </motion.div>
         <div className='flex justify-center my-8'>
-        <button onClick={click} className='bg-red-900 px-5 py-2 rounded-lg'>Checkout</button>
+        <button onClick={click} className='bg-[#D7E4C0] fixed top-[78vh] px-5 py-2 rounded-lg'>Checkout</button>
         </div>
         </>
 

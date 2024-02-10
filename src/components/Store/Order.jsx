@@ -85,8 +85,8 @@ function Order(props) {
       };
   // {props.val}
   return (
-    <div className='flex justify-center'>
-    <form action="" className="drop-shadow-2xl py-2 flex flex-col items-center bg-red-700 mt-3 py-10 rounded-lg" onSubmit={submit}>
+    <div className='flex justify-center py-5'>
+    <form action="" className="drop-shadow-2xl flex flex-col items-center bg-[#C6DCBA] py-5 rounded-lg" onSubmit={submit}>
       <motion.div 
           variants={container}
           initial="hidden"
