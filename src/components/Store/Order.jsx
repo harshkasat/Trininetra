@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import TextBoxs from './TextBox'
+// import TextBoxs from './TextBox';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion'
+// import axios from 'axios'
+
 function Order(props) {
   
   const nav = useNavigate();
@@ -68,8 +71,12 @@ function Order(props) {
         <br />
         </>
       ))
-      const submit = () => {
-        nav('/checkout/successfully')
+
+      // const url = 'http://localhost:5000/verify'
+      const submit = (e) => {
+        e.preventDefault()
+        console.log(data)
+        nav("/checkout/successfully")
       }
 
       const container = {
@@ -86,7 +93,7 @@ function Order(props) {
   // {props.val}
   return (
     <div className='flex justify-center py-5'>
-    <form action="" className="drop-shadow-2xl flex flex-col items-center bg-[#C6DCBA] py-5 rounded-lg" onSubmit={submit}>
+    <form action="" onSubmit={submit} method='POST' className="drop-shadow-2xl flex flex-col items-center bg-[#C6DCBA] py-5 rounded-lg">
       <motion.div 
           variants={container}
           initial="hidden"
@@ -96,10 +103,10 @@ function Order(props) {
         {rend}
       </motion.div>
     <br/>
-    Your Total cost : {props.val}
+    Your Total cost : {props.val > 0 ? props.val : 0}
     <br />
     <br />
-    <button onClick={submit} className='bg-red-900 px-5 py-2 rounded-lg'>Submit</button>
+    <button className='bg-red-900 px-5 py-2 rounded-lg'>Submit</button>
     </form> 
     </div>
   )
