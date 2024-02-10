@@ -11,8 +11,8 @@ function NavElement(){
   return (
     <>
       <Link to='/home'>Home</Link>
-      <Link to='/donate'>Donate</Link>
-      <Link to='#'>Team</Link>
+      <Link to='/buy'>Buy</Link>
+      <Link to='./team'>Team</Link>
     </>
   )
 }

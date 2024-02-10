@@ -9,16 +9,19 @@ function Image() {
   // const cameraRef = useRef();
   // cameraRef.current.position.set(0, 0, 5); 
   return (
-      <Canvas>
+    
+      <Canvas >
         <ambientLight />
         <OrbitControls
-        enableZoom={false}
+        enableZoom={false} autoRotate={true} 
+        rotateSpeed={15}
         />
         <Suspense fallback={null}>
           <Scene />
         </Suspense>
         <Environment preset='sunset'/>
       </Canvas>
+        
   );
 }
 
