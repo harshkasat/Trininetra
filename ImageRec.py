@@ -26,7 +26,6 @@ class Gemini:
         img = kwargs.get('img')
         cv2.imwrite('captured_image.jpg', img)
         self.img = PIL.Image.open('captured_image.jpg')
-        # speak("Fetching data for you")
         response = self.gemini_pro.generate_content(["Tell me about the image", self.img])
         speak(response.text)
 

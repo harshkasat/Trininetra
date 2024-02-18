@@ -29,7 +29,7 @@ def recognize_speech():
     while True:
         with sr.Microphone() as source:
             print('Listening....')
-            r.pause_threshold = 1
+            r.pause_threshold = 0.5
             audio = r.listen(source)
 
         try:
@@ -61,8 +61,7 @@ def recognize_speech():
                 speak("Goodbye!")
                 break
             else:
-                # Process the query or command here
-                speak("You said: " + query)
+                speak("Please give me command")
         except Exception as e:
             print(e)
 
@@ -72,23 +71,6 @@ def speak(text):
     engine.say(text)
     engine.runAndWait()
 
-# Function to handle conversation mode
-
-# Function to take user input
-def take_user_input():
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        print('Listening....')
-        r.pause_threshold = 1
-        audio = r.listen(source)
-
-    try:
-        print('Recognizing...')
-        query = r.recognize_google(audio, language='en-in')
-        return query.lower()
-    except Exception:
-        speak('Sorry, I could not understand. Could you please say that again?')
-        return 'None'
 
 # Start speech recognition in a separate thread
 speech_thread = threading.Thread(target=recognize_speech)
@@ -104,7 +86,6 @@ while True:
         frame = dist_est.est(image=frame)
     elif mode == "facial detection":
         frame = facial_recognition.facial_recognition_xyz(frame=frame)
-        pass
     elif mode == 'Capture Image':
         if capture:
             # mode = 'object'
@@ -123,6 +104,6 @@ while True:
         break
 
 # Release the video capture and close all windows
+speech_thread.join()
 cap.release()
 cv2.destroyAllWindows()
-speech_thread.join()

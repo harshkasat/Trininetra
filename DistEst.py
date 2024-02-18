@@ -34,6 +34,7 @@ class DistEstimate:
 
 
     def est(self, image):
+        idx = None
         image = cv2.resize(image, (640, 480))
         height, width, channels = image.shape
         results = self.model(image)
@@ -61,7 +62,6 @@ class DistEstimate:
 
                     new_detection = np.vstack((new_detection, currentArr))
                     noice = self.tracker.update(new_detection)
-                    idx = None
                     if len(noice) > 1:
                         idx = noice[0][4]
 
@@ -69,7 +69,7 @@ class DistEstimate:
                         cv2.putText(image, f' Alert object {self.labels[class_id]} near {math.floor(d)} inch', (16, 28), self.font_scale, 2, (0, 0, 255), 2)
                         if idx not in self.result_id:
                             self.result_id.append(id)
-                            threading.Thread(target=self.get_alert, kwargs={"class_id":class_id}
+                            dist = threading.Thread(target=self.get_alert, kwargs={"class_id":class_id}
                                             ).start()
                             
         return image
