@@ -16,7 +16,9 @@ Trininetra incorporates a facial recognition system that identifies individuals 
 ### Word Description Functionality
 Trininetra offers a word description functionality that verbally describes the visual scene to the user. By leveraging advanced image processing and natural language generation, the application provides detailed descriptions of objects, people, and surroundings, enabling users to better understand their environment.
 
-## About Us
+## Youtube Demo:
+[![Youtube Demo](https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FYouTube_%2528channel%2529&psig=AOvVaw0zoK1sNZvMlc20dDUYddJi&ust=1708696716253000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCKjD17iNv4QDFQAAAAAdAAAAABAE)](https://youtu.be/6rCU4kvXNJE?feature=shared)
+
 
 Trininetra is developed by ![@harshkasat](https://github.com/harshkasat), ![@Nikuunj](https://github.com/Nikuunj) and ![@sugerdarco](https://github.com/sugerdarco) in HaachTheFall 4.0. Our mission is to create inclusive solutions that enhance accessibility and promote independence for all users.
 
